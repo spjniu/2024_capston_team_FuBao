@@ -115,24 +115,6 @@ means.rate_right_back=100-means.rate_right_front;
 means.rate_both_left=(means.lf+means.lb)*100/(means.lf+means.lb+means.rb+means.rf);
 means.rate_both_right=100-means.rate_both_left;
 
-Serial.print(" 함수 내 왼발 후족의 비율: ");
-Serial.print(means.rate_left_back);
-Serial.println("%");
-Serial.print(" 함수 내 왼발 전족의 비율: ");
-Serial.print(means.rate_left_front);
-Serial.println("%");
-Serial.print("함수 내 오른발 후족의 비율: ");
-Serial.print(means.rate_right_back);
-Serial.println("%");
-Serial.print("함수 내 오른발 전족의 비율: ");
-Serial.print(means.rate_right_front);
-Serial.println("%");
-Serial.print("함수 내 전체 중 왼발의 비율: ");
-Serial.print(means.rate_both_left);
-Serial.println("%");
-Serial.print("함수 내 전체 중 오른발의 비율: ");
-Serial.print(means.rate_both_right);
-Serial.println("%");
 
 return means; // sum_lb mean_lb로 바꾸기 나중에 회로 고쳐지면 ( ?? )
 }
@@ -163,17 +145,6 @@ void setup()
   Serial.println("Start Now");
   delay(2000);
 }
-
-/*
- UI 개발할 때 set 페이지에서 start 누르면 압력감지가 시작되도록 연동
-1. 한쪽 발에서의 전족의 비율
-2. 한쪽 발에서의 중+후족의 비율
-3. 양발(왼발과 오른발)의 압력 비율 비교
-카메라랑 연동해서 횟수 끝나면 운동 종료 or 무게 관련 알고리즘으로 바벨 들면 시작 내려놓으면 종료 그때까지 모든 시점 값 다 더해서 평균내기
-원래 무게에서 바벨 들어서 무게가 증가되면 시작, 원래 무게로 돌아오면 종료
-*/
-// 05.12 무게 비율 구하기까지 성공 위에 주석 처리돼있는 것들만 완성하면 될듯
-
 
 
 void loop() 
