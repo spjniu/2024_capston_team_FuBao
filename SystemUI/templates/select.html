@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <title>프리웨이트 운동 측정</title>
+    </head>
+    <body>
+        <br><br>
+        <div class="container">
+            <div class="col text-center">
+                <IMG height="200px" src="https://gifdb.com/images/high/working-out-373-x-498-gif-phrqz6aaa8wt62y8.gif">            
+                <p><h2>Select Exercise</h2></p><br>    
+
+                <script>
+                    function sendSignal(signalType) {
+                        const xhr = new XMLHttpRequest();
+                        xhr.open("POST", "http://127.0.0.1:8080/send_signal", true);    // ip 주소에 맞게 입력
+                        xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
+                        xhr.onreadystatechange = function () {
+                            if (xhr.readyState === 4 && xhr.status === 200) {
+                                const response = JSON.parse(xhr.responseText);
+                                console.log('Signal sent:', response);
+                            }
+                        };
+                        xhr.send(JSON.stringify({ signal: signalType }));
+                    }
+
+                    // 몸무게 입력 받는 함수
+
+                    function startshoulder() {
+                        sendSignal('shoulderpress'); // 운동 시작 신호 보내기
+                        localStorage.setItem('event', 'ShoulderPress'); // 데이터 저장
+                        location.href = '/inputWeight';
+                    }
+                    function startsquat() {
+                        sendSignal('squat'); // 운동 시작 신호 보내기
+                        localStorage.setItem('event', 'Squat'); // 데이터 저장
+                        location.href = '/inputWeight';
+                    }
+                    function startarmcurl() {
+                        sendSignal('armcurl'); // 운동 시작 신호 보내기
+                        localStorage.setItem('event', 'ArmCurl'); // 데이터 저장
+                        location.href = '/inputWeight'; // /inputWeight 페이지로 이동
+                    }
+                    function startside() {
+                        sendSignal('sidelateralraise'); // 운동 시작 신호 보내기
+                        localStorage.setItem('event', 'SideLateralRaise'); // 데이터 저장
+                        location.href = '/inputWeight'; // /inputWeight 페이지로 이동
+                    }
+                    function startdead() {
+                        sendSignal('deadlift'); // 운동 시작 신호 보내기
+                        localStorage.setItem('event', 'DeadLift'); // 데이터 저장
+                        location.href = '/inputWeight'; // /inputWeight 페이지로 이동
+                    }
+                    function startbabel() {
+                        sendSignal('babelrow'); // 운동 시작 신호 보내기
+                        localStorage.setItem('event', 'BarbelRow'); // 데이터 저장
+                        location.href = '/inputWeight'; // /inputWeight 페이지로 이동
+                    }
+
+                    // back 버튼 클릭 시 첫 페이지로 이동
+                    function goBack() {
+                        location.href = '/';
+                    }
+                </script>
+                <button type="button" class="btn btn-outline-success" onclick="startshoulder()">ShoulderPress</button>
+                <button type="button" class="btn btn-outline-success" onclick="startsquat()">Squat</button>
+                <button type="button" class="btn btn-outline-success" onclick="startarmcurl()">ArmCurl</button><p></p>
+                <button type="button" class="btn btn-outline-success" onclick="startside()">SideLateralRaise</button>
+                <button type="button" class="btn btn-outline-success" onclick="startdead()">DeadLift</button>
+                <button type="button" class="btn btn-outline-success" onclick="startbabel()">BarbelRow</button>
+                <p><div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                    <button class="btn btn-danger" type="button" onclick="goBack()">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-counterclockwise" viewBox="0 0 16 16">
+                      <path fill-rule="evenodd" d="M8 3a5 5 0 1 1-4.546 2.914.5.5 0 0 0-.908-.417A6 6 0 1 0 8 2z"/>
+                      <path d="M8 4.466V.534a.25.25 0 0 0-.41-.192L5.23 2.308a.25.25 0 0 0 0 .384l2.36 1.966A.25.25 0 0 0 8 4.466"/>
+                      </svg>
+                      back
+                    </button>
+                </div></p>
+            </div>
+        </div>
+
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+    </body>
+</html>
