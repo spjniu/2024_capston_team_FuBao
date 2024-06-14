@@ -2,9 +2,10 @@ import cv2
 import numpy as np
 import subprocess
 import os
+from datetime import datetime
 
 # 캡처한 이미지를 저장할 디렉토리
-capture_dir = 'calibration_images'
+capture_dir = 'static/uploaded_videos'
 if not os.path.exists(capture_dir):
     os.makedirs(capture_dir)
 
@@ -40,7 +41,8 @@ def capture_images_from_camera(camera_index, window_name):
 
                     if cv2.waitKey(1) & 0xFF == ord('c'):  # 'c' 키가 눌리면
                         image_counter += 1
-                        image_path = os.path.join(capture_dir, f"calibration_image_{image_counter}.jpg")
+                        current_time = datetime.now().strftime("%m%d_%H%M")
+                        image_path = os.path.join(capture_dir, f"image_{image_counter}_{current_time}.jpg")
                         cv2.imwrite(image_path, frame)  # 프레임을 이미지로 저장
                         print(f"Captured {image_path}")
 
@@ -54,5 +56,4 @@ def capture_images_from_camera(camera_index, window_name):
 
 # 0번 카메라에서 이미지 캡처
 capture_images_from_camera(0, 'Camera 0')
-# 1번 카메라에서 이미지 캡처 (주석 처리됨)
-# capture_images_from_camera(1, 'Camera 1')
+
