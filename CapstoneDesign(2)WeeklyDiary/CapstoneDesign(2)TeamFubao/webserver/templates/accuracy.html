@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Injury Risk Analysis</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css" integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N" crossorigin="anonymous">
+  <style>
+    body, html {
+      height: 100%;
+      margin: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .container {
+      width: 100%;
+    }
+    img {
+      max-width: 100%;
+      height: auto;
+    }
+    .back-button {
+      margin-top: 20px;
+    }
+    header {
+      margin: 0 auto;
+      background-color: #4CAF50;
+      color: white;
+      text-align: left;
+      padding: 10px 20px;
+      font-size: 24px;
+      font-weight: bold;
+      border-radius: 5px 5px 0 0;
+      gap: 10px; /* 이미지와 텍스트 간 간격 */
+    }
+    .header-image {
+      width: auto;
+      height: 1.5em; /* 텍스트 크기에 맞춤 (em 단위 사용) */
+      vertical-align: middle; /* 텍스트와 이미지 수직 정렬 */
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      Fubao
+      <img src="{{ url_for('static', filename='fubao-01.png') }}" alt="Fubao Logo" class="header-image">    </header>
+    
+    <div class="text-center mt-4">
+      <h2>Pose Analysis</h2>
+      <img src="{{ url_for('static', filename='uploads/pose_analysis_graph.png') }}" alt="Injury Risk Analysis Graph">
+      <div class="back-button">
+        <a href="{{ url_for('upload') }}" class="btn btn-primary btn-lg">Back</a>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

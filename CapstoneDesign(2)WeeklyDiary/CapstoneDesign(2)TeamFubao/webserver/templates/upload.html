@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>운동 자세 분석</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            margin: 0 auto;
+            background-color: #4CAF50;
+            color: white;
+            text-align: left;
+            padding: 10px 20px;
+            font-size: 24px;
+            font-weight: bold;
+            border-radius: 5px 5px 0 0;
+            gap: 10px; /* 이미지와 텍스트 간 간격 */
+        }
+        .header-image {
+            width: auto;
+            height: 1.5em; /* 텍스트 크기에 맞춤 (em 단위 사용) */
+            vertical-align: middle; /* 텍스트와 이미지 수직 정렬 */
+        }
+        .container {
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .tab {
+            overflow: hidden;
+            border: 1px solid #ccc;
+            background-color: #f1f1f1;
+        }
+        .tab button {
+            background-color: inherit;
+            float: left;
+            border: none;
+            outline: none;
+            cursor: pointer;
+            padding: 14px 16px;
+            transition: 0.3s;
+        }
+        .tab button:hover {
+            background-color: #ddd;
+        }
+        .tab button.active {
+            background-color: #ccc;
+        }
+        .tabcontent {
+            display: none;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-top: none;
+        }
+        .file-input {
+            margin: 20px 0;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+        .spinner {
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid #fff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+    <script>
+        function openTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            tabcontent = document.getElementsByClassName("tabcontent");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+            }
+            tablinks = document.getElementsByClassName("tablinks");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].className = tablinks[i].className.replace(" active", "");
+            }
+            document.getElementById(tabName).style.display = "block";
+            evt.currentTarget.className += " active";
+        }
+        document.addEventListener("DOMContentLoaded", function() {
+            document.getElementById("defaultOpen").click();
+        });
+
+        function uploadFile(event, analysisType) {
+            event.preventDefault();
+            var fileInput = document.querySelector(`#${analysisType} input[type="file"]`);
+            var file = fileInput.files[0];
+
+            if (!file) {
+                alert('Please select a file to upload.');
+                return;
+            }
+
+            var formData = new FormData();
+            formData.append('video_file', file);
+
+            fetch('/upload_video', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('File uploaded successfully!');
+                } else {
+                    throw new Error('Failed to upload file.');
+                }
+            })
+            .catch(error => {
+                console.error('Error uploading file:', error);
+                alert('Failed to upload file. Please try again.');
+            });
+        }
+
+        function showLoading() {
+            document.getElementById('loading-overlay').style.display = 'flex';
+        }
+    </script>
+</head>
+<body>
+    <header>
+        Fubao
+        <img src="{{ url_for('static', filename='fubao-01.png') }}" alt="Fubao Logo" class="header-image">    </header>
+    </header>
+    <div class="container">
+        <h1>운동 자세 분석</h1>
+        <p>파일을 업로드하고 분석 시작 버튼을 누르세요.</p>
+        
+        <div class="tab">
+            <button class="tablinks" onclick="openTab(event, 'InjuryRisk')" id="defaultOpen">부상 위험도</button>
+            <button class="tablinks" onclick="openTab(event, 'PostureAccuracy')">자세 정확도</button>
+        </div>
+
+        <!-- 부상 위험도 탭 -->
+        <div id="InjuryRisk" class="tabcontent">
+            <h2>부상 위험도 분석</h2>
+            <p>영상을 업로드하고 분석 시작 버튼을 누르세요.</p>
+            <form action="{{ url_for('upload_video') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="video_file" id="video_file" required>
+                <button type="submit" class="btn btn-primary">분석 시작</button>
+            </form>
+        </div>
+
+        <!-- 자세 정확도 탭 -->
+        <div id="PostureAccuracy" class="tabcontent">
+            <h2>자세 정확도 분석</h2>
+            <p>폴더를 업로드하고 분석 시작 버튼을 누르세요.</p>
+            <form action="{{ url_for('upload_folder') }}" method="post" enctype="multipart/form-data">
+                <input type="file" name="folder" webkitdirectory directory class="file-input mb-4">
+                <button type="submit" class="btn btn-primary">분석 시작</button>
+            </form>         
+        </div>
+    </div>
+
+    <!-- 로딩 화면 -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="spinner"></div>
+    </div>
+</body>
+</html>
